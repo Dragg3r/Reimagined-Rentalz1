@@ -1,15 +1,16 @@
-# Drive KL Rental System by Akib
+# Reimagined Rentalz
 
-A comprehensive car rental management system with native mobile iOS app support.
+A comprehensive car rental management system with customer portal, staff approval workflow, and gamification features.
 
 ## Features
 
-- **Customer Management**: Registration, login, document verification
-- **Rental Booking**: Multi-step rental process with vehicle photos and digital signatures
-- **Document Processing**: IC/Passport and utility bill uploads with automatic compression
-- **PDF Generation**: Automated rental agreement creation and email delivery
-- **Staff Dashboard**: Administrative interface for customer and rental management
-- **Mobile iOS App**: Native iOS app using Capacitor
+- **Customer Portal**: Account creation, vehicle browsing, and booking requests
+- **Gamification System**: Points, levels, badges, and loyalty tiers to reward customer loyalty
+- **Staff Dashboard**: Complete approval workflow for managing booking requests
+- **Email Notifications**: Automated notifications for all workflow steps
+- **PDF Generation**: Rental agreement creation with download and WhatsApp sharing
+- **Mobile-Responsive**: Optimized design for all devices
+- **Document Management**: Customer document uploads and verification
 
 ## Tech Stack
 
@@ -17,8 +18,9 @@ A comprehensive car rental management system with native mobile iOS app support.
 - **Backend**: Node.js + Express + TypeScript
 - **Database**: PostgreSQL with Drizzle ORM
 - **UI**: Radix UI + shadcn/ui + Tailwind CSS
-- **Mobile**: Capacitor for iOS native app
 - **File Processing**: Sharp for image processing, PDFKit for documents
+- **Communication**: WhatsApp integration for PDF sharing, SendGrid for emails
+- **Storage**: Object storage for file management
 
 ## Getting Started
 
@@ -31,8 +33,8 @@ A comprehensive car rental management system with native mobile iOS app support.
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd drive-kl-rental-system
+git clone https://github.com/Dragg3r/Reimagined-Rentalz1.git
+cd Reimagined-Rentalz1
 ```
 
 2. Install dependencies:
@@ -56,63 +58,54 @@ npm run db:push
 npm run dev
 ```
 
-## Mobile iOS App
+## Key Components
 
-This project includes a native iOS app built with Capacitor.
+### Customer Experience
+- User registration and authentication
+- Vehicle browsing and selection
+- Booking request submission
+- Gamification rewards (points, levels, badges)
+- Loyalty tier progression
 
-### Building iOS App
+### Staff Workflow
+- Booking request management
+- Customer approval process
+- PDF rental agreement generation
+- Email and WhatsApp notifications
+- Complete rental workflow tracking
 
-1. Build the web app:
-```bash
-npm run build
-```
-
-2. Sync with Capacitor:
-```bash
-npx cap sync ios
-```
-
-3. Open in Xcode (macOS required):
-```bash
-npx cap open ios
-```
-
-### Cloud Builds
-
-The project is configured for cloud builds using:
-- Ionic Appflow
-- Expo EAS Build
-- GitHub Actions
-- Codemagic
-- Bitrise
-
-See `capacitor-cloud-setup.md` for detailed instructions.
-
-## App Configuration
-
-- **App Name**: Drive KL Rental System by Akib
-- **Bundle ID**: com.drivekl.rental
-- **Platform**: iOS (App Store ready)
+### System Features
+- Real-time notifications
+- Mobile-responsive design
+- Secure file uploads and storage
+- Automated PDF generation with sharing
+- Dynamic domain detection for deployments
 
 ## Project Structure
 
 ```
-├── client/          # React frontend
-├── server/          # Express backend
-├── shared/          # Shared schemas and types
-├── ios/             # iOS native project (Capacitor)
-├── assets/          # App icons and assets
-├── dist/            # Built web app
-└── uploads/         # File uploads directory
+├── client/          # React frontend with customer portal and staff dashboard
+├── server/          # Express backend with API routes and services
+├── shared/          # Shared schemas and types (Drizzle ORM)
+├── app/             # File storage for uploads and generated PDFs
+├── assets/          # App assets and images
+└── attached_assets/ # Static assets for the application
 ```
 
 ## Development
 
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server (frontend + backend)
 - `npm run build` - Build for production
 - `npm run db:push` - Update database schema
-- `npx cap sync ios` - Sync web changes with iOS
+
+## Environment Variables
+
+The system requires the following environment variables:
+- `DATABASE_URL` - PostgreSQL connection string
+- `SENDGRID_API_KEY` - For email notifications
+- Email settings for automated notifications
+- Object storage configuration
 
 ## License
 
-Private project for Drive KL Executive Sdn Bhd
+Private project - Reimagined Rentalz Car Rental Management System
