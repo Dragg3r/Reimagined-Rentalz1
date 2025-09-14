@@ -1,0 +1,122 @@
+﻿Drive KL Rental Agreement Plugin (Version 7.1) - Complete Functionality Overview
+Author: Akib Nadeem AK13
+1. Introduction
+The Drive KL Rental Agreement plugin is a complete, bespoke software solution designed to manage the entire car rental process for Drive KL Executive Sdn Bhd. It transforms a standard WordPress site into a sophisticated platform with two distinct interfaces: one for customers and one for staff.
+The system handles everything from new customer registration and verification to a detailed multi-step vehicle booking form, automated payment calculation, and secure, watermarked PDF agreement generation. It is designed with a modern, minimal, and fully mobile-friendly user interface, using a flat color scheme for a professional look and feel.
+2. Core Components & Setup
+To function correctly, the plugin relies on a few key components that are set up automatically.
+* Custom Database Table: Upon activation, the plugin creates a new table in the WordPress database named wp_dkl_customers. This table securely stores all customer information, including hashed passwords and account status.
+* Required Folders: The plugin automatically creates a /backups/ folder inside its main directory (/wp-content/plugins/drive-kl-rental-agreement/) to store all generated PDF agreements.
+* External Library (TCPDF): For PDF generation, the plugin requires the TCPDF library. This must be manually downloaded and placed in a /tcpdf/ folder inside the main plugin directory.
+3. User Flows & Functionality
+The plugin's user flow is split based on the type of user, ensuring a secure and streamlined experience for both customers and administrators.
+A. Initial Role Selection
+When any user first visits the page containing the [dkl_rental_form] shortcode, they are presented with a clean, modern interface asking them to identify their role:
+* Existing Customer: For returning, approved customers to log in.
+* New Customer: For first-time renters to create an account.
+* DKL Staff Login: A discreet link that opens a modal window for staff to access the administrative backend.
+B. New Customer Journey
+1. Registration ("Let's start your Rental Journey")
+A prospective renter must first create an account. This is a crucial security and verification step. The registration form requires the following mandatory information:
+* Full name as per IC: This ensures accurate identification.
+* IC / Passport Number: This is used as the customer's password for future logins. The plugin hashes this value using WordPress's secure wp_hash_password function before storing it, meaning the actual number is never saved in the database.
+* Email Address: This serves as the customer's unique username for logging in. The system checks to prevent duplicate email addresses.
+* Phone Number: This field is validated to accept numbers and common formatting characters (+, -, ) only.
+* Current Address: A text area for the customer's full address.
+* Upload IC / Passport Front Page: This is a required field. Upon upload, the plugin automatically performs two critical security actions:
+   1. Compression: The image quality is reduced to 80% and resized to a maximum of 1200x1200 pixels. This saves significant server space and ensures fast loading times for staff without sacrificing legibility.
+   2. Watermarking: A semi-transparent watermark with the text "FOR DRIVE KL EXECUTIVE SDN BHD USE ONLY" is dynamically applied diagonally across the entire image to prevent unauthorized use or distribution.
+2. Account Approval (Instant)
+The previous "pending approval" system has been removed to streamline the process.
+* Upon successful registration, the customer's account is created in the database with an active status.
+* The user is shown a success message and can immediately proceed to the login screen.
+C. Staff Dashboard & Administration
+1. DKL Staff Login
+Staff members access a hidden login modal by clicking the "DKL Staff Login" link. They log in using the secure, hardcoded credentials, in the future there will be an ability to add more usernames and passwords. 
+* Username: Akib
+* Password: 1234
+2. Staff Dashboard Features
+Upon successful login, the staff member is taken to a comprehensive dashboard with two main sections:
+* Customer Database: This section displays a detailed table of all registered customers, sorted alphabetically by name. It shows their Full Name, Email (Username), Status (with colored pills for easy identification), and includes a direct link to View their IC/Passport photo. It features two key actions:
+   * Blacklist / Un-blacklist: A button allows staff to toggle a customer's status between active and blacklisted. A blacklisted customer is blocked from logging in, and their email cannot be used for a new registration. This provides a powerful tool for managing problematic renters.
+   * Reset Password: A button allows staff to reset a customer's password. When clicked, a prompt appears asking the staff member to enter a new IC/Passport number for the customer.
+* Rental Agreements: This area provides a list of all previously generated PDF agreement files, sorted by the most recent date first. Staff can click to view or download any past agreement for record-keeping and auditing purposes.
+D. Existing Customer Booking Flow
+1. Login ("Welcome back to Drive KL")
+An approved customer logs in using their Email Address as the username and their IC / Passport Number as the password.
+2. First-Time Login: Terms & Conditions
+The very first time an approved customer logs in, they are presented with a screen displaying the full rental terms and conditions in a scrollable box. The "I Have Scrolled and Agree" button is intelligently disabled. It only becomes clickable after the user has scrolled to the bottom of the text, ensuring they have had the opportunity to review the entire agreement. Once they agree, this preference is saved permanently, and this screen will not appear on subsequent logins.
+3. The Multi-Step Rental Form
+Once a customer has agreed to the terms, they can proceed with a rental booking via a seamless multi-step form:
+* Step 1: Confirm Your Details: This step is pre-filled with the customer's name, email, phone, and address from the database. The fields are read-only to ensure data integrity, and the customer simply clicks "Next".
+* Step 2: Car Details: The customer selects a vehicle from a dropdown list. This action triggers several automated functions:
+   * Vehicle & Color Selection: The customer chooses from a predefined list of cars and colors.
+      * Available Cars & Categories:
+         * Porsche Macan (Sports SUV)
+         * Porsche 911 (Sports Car)
+         * AMG GTC50 (Super Car)
+         * AMG CLA45s (Sports Car)
+         * AMG A45s (Sports Car)
+         * Nissan GTR (Sports Car)
+         * Mustang (Sports Car)
+         * AMG G63 (Sports SUV)
+         * Alphard SC (Free Mileage)
+         * Honda Civic (Free Mileage)
+         * Ford Ranger (Free Mileage)
+         * Tesla Model 3 (Free Mileage)
+         * Mercedes Benz A200/A35 (Normal Sedan)
+         * Mercedes Benz C200 (Normal Sedan)
+         * BMW F30 328i (Normal Sedan)
+      * Available Colors: White, Silver, Black, Blue, Red, Green, Maroon, Others.
+   * Automatic Mileage Calculation: Based on the car's pre-defined category, the "Mileage Limit" and "Extra Mileage Charges" fields are automatically populated and set to read-only. The categories are:
+      * Sports Car / SUV: 170 KM Limit, RM 2.50/km extra.
+      * Super Car: 150 KM Limit, RM 3.50/km extra.
+      * Normal Sedan: 200 KM Limit, RM 3.50/km extra.
+      * Free Mileage: 499 KM Limit, RM 1.00/km extra.
+   * Interactive Fuel Gauge: A horizontal slider allows for easy input of the current fuel level, with 9 distinct levels from 'E' to 'F'.
+* Step 3: Vehicle Photos: The customer uploads 7 photos of the vehicle's condition: Front With Customer, Front, Back, Left, Right, Interior/Mileage, and Known Damage. Each upload field shows a live preview of the selected image.
+* Step 4: Rental Details: The customer selects the start and end dates for the rental.
+   * Automatic Day Calculation: The system instantly calculates and displays the "Total Days" of the rental.
+   * Automatic End Time: The "End Time" field automatically mirrors the "Start Time" to ensure consistent 24-hour rental periods.
+* Step 5: Payment Details: This section provides a real-time calculation of the total cost.
+   * The customer enters the Rental Per Day and Deposit amounts.
+   * The form automatically calculates and displays the Rental Subtotal, Deposit, and Grand Total.
+   * The customer can enter a Discount amount, which is instantly subtracted from the Grand Total.
+   * A mandatory "Upload Payment Proof" field is included.
+* Step 6: Finalize & Sign: The customer provides their digital signature on a canvas signature pad. The signature can be cleared with a "Clear" button. The final "Generate Agreement" button is only enabled after a signature has been drawn.
+E. Final Agreement Generation
+Upon clicking "Generate Agreement":
+1. The complete set of information, including all form data and the signature image data, is submitted.
+2. A secure, multi-page PDF document is generated on the server. This professional document includes all customer details, rental specifics, the full payment breakdown, all uploaded vehicle photos (including the IC and payment proof), the customer's signature, and the full, unabridged text of the terms and conditions.
+3. The PDF is automatically saved as a backup in the plugin's /backups/ folder with the filename format: FirstName-Date-agreement.pdf.
+4. An email is automatically sent to the customer with the generated PDF agreement attached for their records.
+5. The customer is shown a final confirmation screen displaying the full agreement details (including all photos and terms) and a button to download the PDF they were just emailed.
+5. Full Text: Terms and Conditions
+The following text is embedded in the customer-terms.php template for first-time login and is also included in the final output.php (for the PDF) and agreement-display.php files.
+Drive KL Executive Sdn Bhd
+This Agreement outlines the terms for vehicle rental from Drive KL Executive Sdn Bhd. By signing, the Renter agrees to these clauses. Breaches may lead to penalties, deposit forfeiture, agreement termination, and legal action.
+1. Rental Period and Vehicle Usage
+1.1. Genting Highland Usage Fee: An additional surcharge (RM150-RM350, vehicle-dependent) applies for Genting Highlands travel. Declare and settle this fee with Drive KL Executive Sdn Bhd before departure.
+1.2. Early Termination of Rental: No refunds or partial refunds are provided for early returns. The Renter must honor the original booking duration.
+1.3. Late Return Penalty: Vehicles returned late incur a RM 25-300 per hour penalty, unless Drive KL Executive Sdn Bhd provides prior written agreement.
+1.4. Mileage Limits & Charges: Exceeding any daily mileage cap results in an overage charge (RM1.50–RM5.00/km), payable to Drive KL Executive Sdn Bhd.
+1.5. Fuel Level Requirement: Return vehicles with the same fuel level as received. Drive KL Executive Sdn Bhd will impose a RM50–RM200 refueling charge if not met.
+2. Driver Authorization & Responsibilities
+2.1. Unregistered Drivers Prohibited: Only authorized individuals listed in this Agreement may drive the vehicle. Any unregistered driver voids this Agreement and forfeits the full deposit to Drive KL Executive Sdn Bhd.
+2.2. Traffic Violations & Summons: The Renter is solely responsible for all traffic fines, parking summons, and toll charges incurred during the rental period. Outstanding penalties will be deducted from the deposit by Drive KL Executive Sdn Bhd.
+3. Vehicle Care and Prohibited Actions
+3.1. Unauthorized Workshop Visits: Renters are strictly prohibited from sending the vehicle to any external workshop. Violations result in immediate agreement termination by Drive KL Executive Sdn Bhd and full deposit forfeiture. All repairs must be coordinated with Drive KL Executive Sdn Bhd.
+3.2. Vehicle Misuse & Reckless Behavior: Vehicle abuse (e.g., drifting, burnouts, unauthorized decals/stickers, aggressive revving, off-road use, redlining while idle) is strictly forbidden. This results in full deposit forfeiture to Drive KL Executive Sdn Bhd and potential legal action.
+3.3. Speed Limit Violations: Speeding is monitored via GPS/dash cam. A first offense results in a written warning from Drive KL Executive Sdn Bhd. A second offense leads to immediate rental termination and full deposit forfeiture, with no exceptions.
+3.4. Smoking & Vaping Strictly Prohibited: A RM300 cleaning fee will be charged by Drive KL Executive Sdn Bhd if the interior smells of smoke, vape, or strong odors.
+4. Insurance Coverage and Damages
+4.1. Scope of Insurance Coverage: Insurance coverage from Drive KL Executive Sdn Bhd is limited to major damage or major loss (e.g., total loss, significant structural damage, or theft), as determined by our insurer and Drive KL Executive Sdn Bhd. Normal wear and tear is not covered.
+4.2. Renter's Financial Responsibility for Major Incidents: For major damage/loss where insurance applies, the Renter is responsible for:
+* Loss of Use: Paying the daily rental rate for the entire repair period, compensating Drive KL Executive Sdn Bhd for lost income.
+* No-Claim Discount (NCD) Impact: Paying for the full NCD percentage lost by Drive KL Executive Sdn Bhd due to the claim.
+4.3. Minor Accidents and Damages: Minor accidents, scratches, dents, interior damage, or any non-major damage are NOT covered by insurance or warranty. The Renter is solely responsible for the full repair cost for all such minor damages, assessed and charged by Drive KL Executive Sdn Bhd.
+5. Deposit and Payments
+5.1. Deposit Forfeiture: The security deposit is subject to full or partial forfeiture upon any breach of these Terms & Conditions, including but not limited to clauses 1.3, 2.1, 3.1, 3.2, 3.3, 3.4, 4.2, and 4.3.
+6. General Provisions
+6.1. Right to Terminate: Drive KL Executive Sdn Bhd reserves the right to immediately terminate this Agreement and repossess the vehicle without notice if the Renter breaches any terms.
+6.2. Governing Law: This Agreement is governed by and construed in accordance with the laws of Malaysia.
